@@ -16,7 +16,12 @@ const person = {
         },
         hideAdd: function (state) {
             state.pageAddOn = false
+        },
+        addMember: function (state, payload) {
+            const member = Object.assign({ id: state.members.length + 1 }, payload)
+            state.members.push(member)
         }
+
     },
 }
 
