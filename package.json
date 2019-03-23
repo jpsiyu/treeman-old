@@ -7,7 +7,7 @@
     "p-watch": "parcel watch ./client/public/index.html --public-url /static/",
     "p-build": "parcel build ./client/public/index.html --public-url /static/",
     "clear": "rm -rf .cache dist",
-    "asset": "cp -r ./client/src/asset/* ./dist/",
+    "asset": "cp -r ./client/src/assets/* ./dist/",
     "build": "npm run clear && npm run p-build"
   },
   "keywords": [],
@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "vue": "^2.6.10",
+    "vue-form": "^4.10.1",
     "vue-hot-reload-api": "^2.3.3",
     "vue-router": "^3.0.2",
     "vuex": "^3.1.0"

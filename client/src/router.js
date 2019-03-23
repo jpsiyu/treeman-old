@@ -1,6 +1,6 @@
 import VueRouter from 'vue-router'
-import App from "./base/App"
-import Miss from './base/Miss'
+import App from "./entrance/App"
+import Miss from './entrance/Miss'
 
 const routes = [
     { path: "/", component: App },

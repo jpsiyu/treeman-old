@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
+import VueForm from 'vue-form'
 
 import { createStore } from './store'
 import { createRouter } from './router'
@@ -12,6 +13,9 @@ const router = createRouter()
 // set store
 Vue.use(Vuex)
 const store = createStore()
+
+// set form validator
+Vue.use(VueForm)
 
 // start vue instance
 new Vue({

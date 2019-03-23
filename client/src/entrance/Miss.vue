@@ -1,7 +1,7 @@
 <template>
     <div class="miss">
         <h2>Where, where, where am i?</h2>
-        <img src="../asset/images/miss.png">
+        <img src="../assets/images/man.png">
     </div>
 </template>
 
