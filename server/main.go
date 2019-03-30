@@ -31,7 +31,7 @@ func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	r := mux.NewRouter()
 	// set handler
-	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("dist/"))))
+	r.PathPrefix("/static").Handler(http.StripPrefix("/static", http.FileServer(http.Dir("dist/"))))
 	r.HandleFunc("/", homeHandler)
 	r.NotFoundHandler = http.HandlerFunc(homeHandler)
 
