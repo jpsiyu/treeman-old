@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -47,11 +48,22 @@ func Ping() error {
 	return nil
 }
 
-func Insert(document *interface{}, collectionName string) error {
+func Insert(document interface{}, collectionName string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	collection := client.Database(dbname).Collection(collectionName)
-	_, err := collection.InsertOne(ctx, &document)
+	_, err := collection.InsertOne(ctx, document)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func Update(filter, update *bson.M, collectionName string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	collection := client.Database(dbname).Collection(collectionName)
+	_, err := collection.UpdateOne(ctx, *filter, *update)
 	if err != nil {
 		return err
 	}
