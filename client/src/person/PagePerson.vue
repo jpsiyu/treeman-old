@@ -1,36 +1,52 @@
 <template>
-    <div class="page-person">
-        <Banner></Banner>
-        <div class="members">
+    <div class="pagePerson">
+        <Banner :activePage="swichPageAddState"></Banner>
+        <div class="pagePerson-list">
             <Member v-for="info in members" :key="info.id" :info="info"/>
         </div>
-        <PageAdd v-if="pageAddOn"></PageAdd>
+        <PageAddPerson v-if="pageAddState" :swichPageAddState="swichPageAddState"></PageAddPerson>
     </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import axios from "axios";
 import Member from "./Member";
-import Banner from "./Banner";
-import PageAdd from "./PageAdd";
+import Banner from "../common/Banner";
+import PageAddPerson from "./PageAddPerson";
 export default {
     name: "PagePerson",
-    components: { Member, Banner, PageAdd },
+    data: function() {
+        return {
+            pageAddState: false
+        };
+    },
     computed: {
         ...mapState({
-            pageAddOn: state => state.person.pageAddOn,
             members: state => state.person.members
         })
+    },
+    methods: {
+        swichPageAddState: function(b) {
+            this.pageAddState = b;
+        }
+    },
+    components: { Member, Banner, PageAddPerson },
+    mounted: function() {
+        axios.get("/api/allperson").then(response => {
+            const data = response.data || [];
+            this.$store.commit("initMembers", data);
+        });
     }
 };
 </script>
 
 <style scoped>
-.page-person{
+.pagePerson {
     position: relative;
 }
 
-.members {
+.pagePerson-list {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -39,7 +55,7 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
-    .members {
+    .pagePerson-list {
         justify-content: center;
     }
 }

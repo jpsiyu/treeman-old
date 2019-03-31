@@ -17,9 +17,12 @@ func main() {
 	// set handler
 	r.PathPrefix("/static").Handler(http.StripPrefix("/static", http.FileServer(http.Dir("dist/"))))
 	r.HandleFunc("/", HandleHome).Methods("GET")
+	r.HandleFunc("/api/allperson", HandleGetAllPerson).Methods("GET")
 	r.HandleFunc("/api/genperson", HandleGenPerson).Methods("POST")
 	r.HandleFunc("/api/updateperson", HandleUpdatePerson).Methods("PUT")
-	r.NotFoundHandler = http.HandlerFunc(HandleNotFound)
+	r.HandleFunc("/api/deleteperson", HandleDeletePerson).Methods("PUT")
+	r.HandleFunc("/api/record", HandleGetRecord).Methods("GET")
+	r.NotFoundHandler = http.HandlerFunc(HandleHome)
 
 	// connect database
 	err := db.Connect()

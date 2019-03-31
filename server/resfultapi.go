@@ -1,16 +1,14 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
-)
 
-func responseError(w http.ResponseWriter, err error) {
-	w.Write([]byte(fmt.Sprintf("%s", err)))
-}
+	"go.mongodb.org/mongo-driver/bson"
+)
 
 // base routing
 func HandleHome(w http.ResponseWriter, r *http.Request) {
@@ -34,19 +32,40 @@ func HandleNotFound(w http.ResponseWriter, r *http.Request) {
 
 // business routing
 
-func HandleGenPerson(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query()
-	var err error
-	name := query.Get("name")
-	gender, err := strconv.Atoi(query.Get("gender"))
-	age, err := strconv.Atoi(query.Get("age"))
+// person collection
+func HandleGetAllPerson(w http.ResponseWriter, r *http.Request) {
+	var results []bson.M
+	err := GetAllPerson(&results)
 	if err != nil {
-		responseError(w, err)
+		log.Println(err)
+		w.Write([]byte("error"))
+		return
+	}
+	encode, err := json.Marshal(results)
+	if err != nil {
+		log.Println(err)
+		w.Write([]byte("error"))
+		return
+	}
+	w.Write([]byte(encode))
+}
+
+func HandleGenPerson(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	var err error
+	log.Println(r.PostForm, r.Form)
+	name := r.FormValue("name")
+	gender, err := strconv.Atoi(r.FormValue("gender"))
+	age, err := strconv.Atoi(r.FormValue("age"))
+	if err != nil {
+		log.Println(err)
+		w.Write([]byte("error"))
 		return
 	}
 	err = GenPerson(name, gender, age)
 	if err != nil {
-		responseError(w, err)
+		log.Println(err)
+		w.Write([]byte("error"))
 		return
 	}
 	w.Write([]byte("ok"))
@@ -55,17 +74,52 @@ func HandleGenPerson(w http.ResponseWriter, r *http.Request) {
 func HandleUpdatePerson(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	var err error
-	name := r.PostForm.Get("name")
+	name := r.FormValue("name")
 	gender, err := strconv.Atoi(r.FormValue("gender"))
 	age, err := strconv.Atoi(r.FormValue("age"))
 	if err != nil {
-		responseError(w, err)
+		log.Println(err)
+		w.Write([]byte("error"))
 		return
 	}
 	err = UpdatePerson(name, gender, age)
 	if err != nil {
-		responseError(w, err)
+		log.Println(err)
+		w.Write([]byte("error"))
 		return
 	}
 	w.Write([]byte("ok"))
+}
+
+func HandleDeletePerson(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	name := r.FormValue("name")
+	err := DeletePerson(name)
+	if err != nil {
+		log.Println(err)
+		w.Write([]byte("error"))
+		return
+	}
+	w.Write([]byte("ok"))
+}
+
+// record collection
+
+func HandleGetRecord(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	id := r.FormValue("id")
+	var results []bson.M
+	err := GetRecord(&results, id)
+	if err != nil {
+		log.Println(err)
+		w.Write([]byte("error"))
+		return
+	}
+	encode, err := json.Marshal(&results)
+	if err != nil {
+		log.Println(err)
+		w.Write([]byte("error"))
+		return
+	}
+	w.Write([]byte(encode))
 }

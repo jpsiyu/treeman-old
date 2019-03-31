@@ -3,7 +3,7 @@
         <div class="detail">
             <div class="top">
                 <h2 class="title">添加人物</h2>
-                <div class="close noselect" @click="onClick">X</div>
+                <div class="close noselect" @click="close">X</div>
             </div>
             <form @submit.prevent="onSubmit">
                 <pair>
@@ -56,9 +56,12 @@
 
 <script>
 import { MacroGender } from "../macro";
+import axios from "axios";
+import qs from "qs";
 import Vue from "vue";
 export default {
     name: "PageAdd",
+    props: ["swichPageAddState"],
     data: function() {
         return {
             checkErrors: [],
@@ -76,8 +79,8 @@ export default {
         }
     },
     methods: {
-        onClick: function() {
-            this.$store.commit("hideAdd");
+        close: function() {
+            this.swichPageAddState(false)
         },
         onSubmit: function(event) {
             this.checkErrors = [];
@@ -85,12 +88,16 @@ export default {
             if (!this.gender) this.checkErrors.push("请选择性别!");
 
             if (this.checkErrors.length == 0) {
-                this.$store.commit("addMember", {
+                const ajaxData = {
                     name: this.name,
                     age: this.age,
                     gender: this.gender
-                });
-                this.onClick();
+                };
+                axios
+                    .post("/api/genperson", qs.stringify(ajaxData))
+                    .then(response => {
+                        this.close();
+                    });
             }
         }
     },

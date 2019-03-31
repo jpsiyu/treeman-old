@@ -6,7 +6,7 @@
                 <img class="logo" src="../assets/images/treeman.png">
             </div>
             <div class="grid">
-                <div class="add " @click="onAdd">
+                <div class="add" @click="activePage(true)">
                     <p class="noselect">+</p>
                 </div>
             </div>
@@ -15,14 +15,10 @@
 </template>
 
 <script>
-import {MacroEvent} from "../macro"
+import { MacroEvent } from "../macro";
 export default {
     name: "Banner",
-    methods:{
-        onAdd: function(){
-            this.$store.commit("showAdd")
-        }
-    }
+    props: ["activePage"]
 };
 </script>
 
@@ -59,7 +55,7 @@ export default {
     align-items: center;
 }
 
-.grid:nth-child(3){
+.grid:nth-child(3) {
     justify-content: flex-end;
 }
 
@@ -75,7 +71,7 @@ export default {
     background-color: rgb(0, 158, 248);
     color: white;
     margin-right: 20%;
+    cursor: pointer;
 }
-
 </style>
 

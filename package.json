@@ -18,6 +18,8 @@
     "vue": "./node_modules/vue/dist/vue.esm.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "qs": "^6.7.0",
     "vue": "^2.6.10",
     "vue-form": "^4.10.1",
     "vue-hot-reload-api": "^2.3.3",

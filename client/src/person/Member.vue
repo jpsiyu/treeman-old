@@ -1,17 +1,19 @@
 <template>
-    <div class="member">
-        <div class="background">
-            <div class="grid" :class="setColor"></div>
-            <div class="grid"></div>
-        </div>
-        <div class="detail">
-            <div class="base">
-                <img class="head" :src="info.gender | imagePath">
-                <p class="name">{{info.name}}</p>
+    <router-link :to="{path: '/record', query:{id: info._id}}">
+        <div class="member">
+            <div class="background">
+                <div class="grid" :class="setColor"></div>
+                <div class="grid"></div>
             </div>
-            <div class="desc">{{info.desc | desc}}</div>
+            <div class="detail">
+                <div class="base">
+                    <img class="head" :src="info.gender | imagePath">
+                    <p class="name">{{info.name}}</p>
+                </div>
+                <div class="desc">{{info.desc | desc}}</div>
+            </div>
         </div>
-    </div>
+    </router-link>
 </template>
 
 <script>
@@ -53,6 +55,7 @@ export default {
     height: 200px;
     margin: 5px;
     position: relative;
+    cursor: pointer;
 }
 
 .background {

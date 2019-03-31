@@ -1,6 +1,6 @@
 const MacroGender = {
-    Male: "Male",
-    Female: "Female",
+    Male: 1,
+    Female: 2,
 }
 
 const MacroEvent = {

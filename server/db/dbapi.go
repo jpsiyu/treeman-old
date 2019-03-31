@@ -69,3 +69,37 @@ func Update(filter, update *bson.M, collectionName string) error {
 	}
 	return nil
 }
+
+func Find(results *[]bson.M, filter *bson.M, collectionName string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	collection := client.Database(dbname).Collection(collectionName)
+	cur, err := collection.Find(ctx, *filter)
+	defer cur.Close(context.Background())
+	if err != nil {
+		return err
+	}
+	for cur.Next(ctx) {
+		var result bson.M
+		err := cur.Decode(&result)
+		if err != nil {
+			return err
+		}
+		*results = append(*results, result)
+	}
+	if err := cur.Err(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func Delete(filter *bson.M, collectionName string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	collection := client.Database(dbname).Collection(collectionName)
+	_, err := collection.DeleteOne(ctx, filter)
+	if err != nil {
+		return err
+	}
+	return nil
+}
