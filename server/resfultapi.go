@@ -123,3 +123,29 @@ func HandleGetRecord(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Write([]byte(encode))
 }
+
+func HandleAddRecord(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	id := r.FormValue("id")
+	detail := r.FormValue("detail")
+	comment := r.FormValue("comment")
+	err := AddRecord(id, detail, comment)
+	if err != nil {
+		log.Println(err)
+		w.Write([]byte("error"))
+		return
+	}
+	w.Write([]byte("ok"))
+}
+
+func HandleDeleteRecord(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	id := r.FormValue("id")
+	err := DeleteRecord(id)
+	if err != nil {
+		log.Println(err)
+		w.Write([]byte("error"))
+		return
+	}
+	w.Write([]byte("ok"))
+}

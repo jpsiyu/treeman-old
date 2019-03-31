@@ -7,6 +7,7 @@ type DBPerson struct {
 }
 
 type DBRecord struct {
+	Uid       string `json:"uid"`
 	Timestamp int64  `json:"timestamp"`
 	Detail    string `json:"detail"`
 	Comment   string `json:"comment"`

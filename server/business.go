@@ -1,8 +1,11 @@
 package main
 
 import (
+	"time"
+
 	"github.com/jpsiyu/treeman/server/db"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func GetAllPerson(results *[]bson.M) error {
@@ -47,10 +50,39 @@ func DeletePerson(name string) error {
 }
 
 func GetRecord(results *[]bson.M, id string) error {
-	filter := bson.M{"_id": id}
+	filter := bson.M{"uid": id}
 	err := db.Find(results, &filter, db.CollectionRecord)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func AddRecord(id, detail, comment string) error {
+	timestamp := time.Now().Unix()
+	dbrecord := db.DBRecord{
+		Uid:       id,
+		Detail:    detail,
+		Comment:   comment,
+		Timestamp: timestamp,
+	}
+	err := db.Insert(&dbrecord, db.CollectionRecord)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func DeleteRecord(id string) error {
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	filter := bson.M{"_id": oid}
+	err = db.Delete(&filter, db.CollectionRecord)
+	if err != nil {
+		return err
+	}
+	return nil
+
 }

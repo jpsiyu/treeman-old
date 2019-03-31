@@ -3,7 +3,7 @@
         <div class="banner">
             <div class="grid"></div>
             <div class="grid">
-                <img class="logo" src="../assets/images/treeman.png">
+                <img class="logo" src="../assets/images/treeman.png" @click="toHome">
             </div>
             <div class="grid">
                 <div class="add" @click="activePage(true)">
@@ -18,7 +18,12 @@
 import { MacroEvent } from "../macro";
 export default {
     name: "Banner",
-    props: ["activePage"]
+    props: ["activePage"],
+    methods: {
+        toHome: function() {
+            this.$router.push({ path: "/" });
+        }
+    }
 };
 </script>
 
@@ -45,6 +50,7 @@ export default {
 .logo {
     width: auto;
     height: 60%;
+    cursor: pointer;
 }
 
 .grid {
