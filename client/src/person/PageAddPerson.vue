@@ -56,12 +56,10 @@
 
 <script>
 import { MacroGender } from "../macro";
-import axios from "axios";
-import qs from "qs";
+import request from "../request";
 import Vue from "vue";
 export default {
     name: "PageAdd",
-    props: ["swichPageAddState"],
     data: function() {
         return {
             checkErrors: [],
@@ -80,7 +78,7 @@ export default {
     },
     methods: {
         close: function() {
-            this.swichPageAddState(false)
+            this.$emit("pageSwitch", false);
         },
         onSubmit: function(event) {
             this.checkErrors = [];
@@ -88,16 +86,10 @@ export default {
             if (!this.gender) this.checkErrors.push("请选择性别!");
 
             if (this.checkErrors.length == 0) {
-                const ajaxData = {
-                    name: this.name,
-                    age: this.age,
-                    gender: this.gender
-                };
-                axios
-                    .post("/api/genperson", qs.stringify(ajaxData))
-                    .then(response => {
-                        this.close();
-                    });
+                request.genPerson(this.name, this.age, this.gender).then(res => {
+                    this.$emit("getAllPerson")
+                    this.close();
+                });
             }
         }
     },

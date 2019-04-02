@@ -1,7 +1,12 @@
 <template>
     <div class="record">
-        <Banner :activePage="switchPageAddRecordState"></Banner>
-        <PageAddRecord :activePage="switchPageAddRecordState" :id="id" v-if="pageAddRecordState"></PageAddRecord>
+        <Banner @pageSwitch="pageSwitch"></Banner>
+        <PageAddRecord
+            @pageSwitch="pageSwitch"
+            @getRecord="getRecord"
+            :id="id"
+            v-if="pageAddRecordState"
+        ></PageAddRecord>
         <div class="recordList">
             <div class="oneRecord" v-for="(item, i) in recordList" :key="i">
                 <span class="oneRecord-detail">{{item.detail}}</span>
@@ -15,8 +20,7 @@
 <script>
 import Banner from "../common/Banner";
 import PageAddRecord from "./PageAddRecord";
-import axios from "axios";
-import qs from "qs";
+import request from "../request";
 export default {
     data: function() {
         return {
@@ -27,26 +31,24 @@ export default {
     },
     components: { Banner, PageAddRecord },
     methods: {
-        switchPageAddRecordState: function(b) {
+        pageSwitch: function(b) {
             this.pageAddRecordState = b;
         },
         deleteRecord(id) {
-            const ajaxData = {
-                id: id
-            };
-            axios
-                .put("/api/deleterecord", qs.stringify(ajaxData))
-                .then(response => {
-                    window.location.reload()
-                });
+            request.delRecord(id).then(response => {
+                this.getRecord();
+            });
+        },
+        getRecord() {
+            request.getRecord(this.id).then(response => {
+                const data = response.data;
+                this.recordList = data || [];
+            });
         }
     },
     mounted: function() {
         this.id = this.$route.query.id;
-        axios.get(`/api/record?id=${this.id}`).then(response => {
-            const data = response.data;
-            this.recordList = data || [];
-        });
+        this.getRecord();
     }
 };
 </script>

@@ -1,16 +1,16 @@
 <template>
     <div class="pagePerson">
-        <Banner :activePage="swichPageAddState"></Banner>
+        <Banner @pageSwitch="pageSwitch"></Banner>
         <div class="pagePerson-list">
             <Member v-for="info in members" :key="info.id" :info="info"/>
         </div>
-        <PageAddPerson v-if="pageAddState" :swichPageAddState="swichPageAddState"></PageAddPerson>
+        <PageAddPerson v-if="pageAddState" @pageSwitch="pageSwitch" @getAllPerson="getAllPerson"></PageAddPerson>
     </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import axios from "axios";
+import request from "../request";
 import Member from "./Member";
 import Banner from "../common/Banner";
 import PageAddPerson from "./PageAddPerson";
@@ -27,16 +27,19 @@ export default {
         })
     },
     methods: {
-        swichPageAddState: function(b) {
+        pageSwitch: function(b) {
             this.pageAddState = b;
+        },
+        getAllPerson: function() {
+            request.getAllPerson().then(response => {
+                const data = response.data || [];
+                this.$store.commit("initMembers", data);
+            });
         }
     },
     components: { Member, Banner, PageAddPerson },
     mounted: function() {
-        axios.get("/api/allperson").then(response => {
-            const data = response.data || [];
-            this.$store.commit("initMembers", data);
-        });
+        this.getAllPerson();
     }
 };
 </script>

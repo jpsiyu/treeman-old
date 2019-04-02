@@ -24,11 +24,10 @@
 </template>
 
 <script>
-import axios from "axios";
-import qs from "qs";
+import request from "../request";
 export default {
     name: "PageAddRecord",
-    props: ["activePage", "id"],
+    props: ["id"],
     data: function() {
         return {
             detail: "",
@@ -43,19 +42,15 @@ export default {
                 return;
             }
             this.error = "";
-            const ajaxData = {
-                detail: this.detail,
-                comment: this.comment,
-                id: this.id
-            };
-            axios
-                .post("/api/addrecord", qs.stringify(ajaxData))
+            request
+                .addRecord(this.id, this.detail, this.comment)
                 .then(response => {
-                    window.location.reload()
+                    this.$emit("getRecord")
+                    this.close();
                 });
         },
         close: function() {
-            this.activePage(false);
+            this.$emit("pageSwitch", false)
         }
     }
 };

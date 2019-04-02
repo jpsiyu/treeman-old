@@ -6,7 +6,7 @@
                 <img class="logo" src="../assets/images/treeman.png" @click="toHome">
             </div>
             <div class="grid">
-                <div class="add" @click="activePage(true)">
+                <div class="add" @click="onAddClick">
                     <p class="noselect">+</p>
                 </div>
             </div>
@@ -18,8 +18,10 @@
 import { MacroEvent } from "../macro";
 export default {
     name: "Banner",
-    props: ["activePage"],
     methods: {
+        onAddClick: function(){
+            this.$emit("pageSwitch", true)
+        },
         toHome: function() {
             this.$router.push({ path: "/" });
         }
