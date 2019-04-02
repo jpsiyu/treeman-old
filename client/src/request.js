@@ -10,6 +10,10 @@ const getAllPerson = () => {
     return axios.get("/api/allperson")
 }
 
+const delPerson = (name) => {
+    return axios.put("/api/deleteperson", qs.stringify({name}))
+}
+
 const getRecord = (id) => {
     return axios.get(`/api/record?id=${id}`)
 }
@@ -24,9 +28,11 @@ const addRecord = (id, detail, comment) => {
     return axios.post("/api/addrecord", qs.stringify(ajaxData))
 }
 
+
 export default {
     genPerson,
     getAllPerson,
+    delPerson,
     getRecord,
     delRecord,
     addRecord,

@@ -1,26 +1,38 @@
 <template>
-    <router-link :to="{path: '/record', query:{id: info._id}}">
-        <div class="member">
-            <div class="background">
-                <div class="grid" :class="setColor"></div>
-                <div class="grid"></div>
+    <div class="member">
+        <div class="background">
+            <div class="grid" :class="setColor">
+                <button class="delBtn" @click.stop="del">X</button>
             </div>
-            <div class="detail">
-                <div class="base">
-                    <img class="head" :src="info.gender | imagePath">
-                    <p class="name">{{info.name}}</p>
-                </div>
-                <div class="desc">{{info.desc | desc}}</div>
+            <div class="grid">
+                <router-link :to="{path: '/record', query:{id: info._id}}">
+                    <div class="linkspace"></div>
+                </router-link>
             </div>
         </div>
-    </router-link>
+        <div class="detail">
+            <div class="base">
+                <img class="head" :src="info.gender | imagePath">
+                <p class="name">{{info.name}}</p>
+            </div>
+            <div class="desc">{{info.desc | desc}}</div>
+        </div>
+    </div>
 </template>
 
 <script>
 import { MacroGender } from "../macro";
+import request from "../request";
 export default {
     name: "Member",
     props: ["info"],
+    methods: {
+        del: function() {
+            request.delPerson(this.info.name).then(res => {
+                this.$emit("getAllPerson")
+            });
+        }
+    },
     computed: {
         setColor: function() {
             const res = {
@@ -50,12 +62,10 @@ export default {
     flex-direction: column;
     align-items: flex-start;
     background-color: white;
-    width: 370px;
-    min-width: 370px;
+    width: 100%;
     height: 200px;
-    margin: 5px;
+    margin: 5px 0;
     position: relative;
-    cursor: pointer;
 }
 
 .background {
@@ -82,6 +92,7 @@ export default {
     display: flex;
     flex-direction: column;
     padding: 0 10px;
+    pointer-events: none;
 }
 
 .desc {
@@ -119,6 +130,33 @@ export default {
 
 .pink {
     background-color: rgb(233, 67, 136);
+}
+
+.delBtn {
+    right: 0;
+    margin: 10px;
+    position: absolute;
+    outline: none;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    background-color: goldenrod;
+    color: white;
+    border: none;
+}
+
+.linkspace {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+@media screen and (min-width: 768px) {
+    .member {
+        width: 370px;
+    }
 }
 </style>
 

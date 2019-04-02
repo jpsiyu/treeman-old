@@ -2,7 +2,7 @@
     <div class="page-add">
         <div class="detail">
             <div class="top">
-                <h2 class="title">添加人物</h2>
+                <h3 class="title">添加人物</h3>
                 <div class="close noselect" @click="close">X</div>
             </div>
             <form @submit.prevent="onSubmit">
@@ -11,7 +11,7 @@
                         <label>名字:</label>
                     </template>
                     <template v-slot:value>
-                        <input type="text" v-model="name">
+                        <input class="inputname" type="text" v-model="name">
                     </template>
                 </pair>
 
@@ -34,7 +34,7 @@
                         <label>年龄:</label>
                     </template>
                     <template v-slot:value>
-                        <select v-model="age">
+                        <select class="ageselect" v-model="age">
                             <option disabled :value="age">{{age}}</option>
                             <option v-for="n in 100" :key="n">{{n}}</option>
                         </select>
@@ -122,8 +122,8 @@ export default {
 }
 
 .detail {
-    min-height: 400px;
-    width: 600px;
+    min-height: 250px;
+    width: 400px;
     margin: auto;
     background-color: white;
     flex-direction: column;
@@ -142,24 +142,37 @@ export default {
     position: absolute;
     top: 0;
     right: 0;
-    background-color: lightcoral;
+    background-color: goldenrod;
     color: white;
     border-radius: 50%;
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 5px;
+    cursor: pointer;
 }
 
 .pair {
-    padding: 15px 0;
+    padding: 10px 0;
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    width: 60%;
+    width: 80%;
     margin: auto;
+}
+
+.inputname{
+    padding: 3px 5px;
+    outline: none;
+}
+
+.ageselect{
+    width: 100px;
+    height: 20px;
+    outline: none;
+    padding: 3px 5px;
 }
 
 .btn {
@@ -168,6 +181,7 @@ export default {
     border: none;
     background-color: blueviolet;
     color: white;
+    cursor: pointer;
 }
 
 .btn:hover {
@@ -182,6 +196,10 @@ export default {
     color: red;
     font-size: 16px;
     font-weight: bold;
+}
+
+form{
+    padding-top: 20px;
 }
 </style>
 

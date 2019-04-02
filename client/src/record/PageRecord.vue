@@ -11,7 +11,7 @@
             <div class="oneRecord" v-for="(item, i) in recordList" :key="i">
                 <span class="oneRecord-detail">{{item.detail}}</span>
                 <span class="oneRecord-comment">{{item.comment}}</span>
-                <button class="btnDel" @click="deleteRecord(item._id)">Del</button>
+                <button class="btnDel" @click="deleteRecord(item._id)">Delete</button>
             </div>
         </div>
     </div>
@@ -44,7 +44,7 @@ export default {
                 const data = response.data;
                 this.recordList = data || [];
             });
-        }
+        },
     },
     mounted: function() {
         this.id = this.$route.query.id;
@@ -71,9 +71,13 @@ export default {
 
 .oneRecord-detail {
     display: block;
+    white-space: pre;
+    padding: 10px 0;
 }
 
 .oneRecord-comment {
+    padding: 10px 0;
+    white-space: pre;
     display: block;
     color: gray;
 }

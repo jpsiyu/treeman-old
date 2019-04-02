@@ -2,7 +2,7 @@
     <div class="pagePerson">
         <Banner @pageSwitch="pageSwitch"></Banner>
         <div class="pagePerson-list">
-            <Member v-for="info in members" :key="info.id" :info="info"/>
+            <Member v-for="info in members" :key="info.id" :info="info" @getAllPerson="getAllPerson"/>
         </div>
         <PageAddPerson v-if="pageAddState" @pageSwitch="pageSwitch" @getAllPerson="getAllPerson"></PageAddPerson>
     </div>
@@ -51,15 +51,19 @@ export default {
 
 .pagePerson-list {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
     margin: auto;
-    max-width: 768px;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (min-width: 768px) {
     .pagePerson-list {
-        justify-content: center;
+        padding: 10px 0;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        max-width: 768px;
     }
 }
 </style>
