@@ -52,18 +52,9 @@ export default {
 .pagePerson-list {
     display: flex;
     margin: auto;
+    max-width: 500px;
     justify-content: center;
     flex-direction: column;
     padding: 10px;
-}
-
-@media screen and (min-width: 768px) {
-    .pagePerson-list {
-        padding: 10px 0;
-        flex-direction: row;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        max-width: 768px;
-    }
 }
 </style>
