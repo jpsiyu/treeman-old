@@ -24,6 +24,7 @@ func main() {
 	r.HandleFunc("/api/record", HandleGetRecord).Methods("GET")
 	r.HandleFunc("/api/addrecord", HandleAddRecord).Methods("POST")
 	r.HandleFunc("/api/deleterecord", HandleDeleteRecord).Methods("PUT")
+	r.HandleFunc("/api/updaterecord", HandleUpdateRecord).Methods("PUT")
 	r.NotFoundHandler = http.HandlerFunc(HandleHome)
 
 	// connect database

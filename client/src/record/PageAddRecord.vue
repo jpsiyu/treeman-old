@@ -1,24 +1,12 @@
 <template>
     <div class="pageAdd" @click="close">
         <div class="pageAdd-container">
-            <textarea
-                class="pageAdd-area"
-                v-model="detail"
-                cols="30"
-                rows="10"
-                @click.stop
-                placeholder="detail"
-            ></textarea>
-            <textarea
-                class="pageAdd-area"
-                v-model="comment"
-                cols="30"
-                rows="10"
-                @click.stop
-                placeholder="comment"
-            ></textarea>
-            <div class="pageAdd-error" v-if="error!=''">{{error}}</div>
+            <span class="pageAdd-areaTitle">Detail:</span>
+            <textarea class="pageAdd-area" v-model="detail" @click.stop></textarea>
+            <span class="pageAdd-areaTitle">Comment:</span>
+            <textarea class="pageAdd-area" v-model="comment" @click.stop></textarea>
             <button class="pageAdd-btn" @click.stop="onBtnSubmit">Submit</button>
+            <div class="pageAdd-error" v-if="error!=''">{{error}}</div>
         </div>
     </div>
 </template>
@@ -45,12 +33,12 @@ export default {
             request
                 .addRecord(this.id, this.detail, this.comment)
                 .then(response => {
-                    this.$emit("getRecord")
+                    this.$emit("getRecord");
                     this.close();
                 });
         },
         close: function() {
-            this.$emit("pageSwitch", false)
+            this.$emit("pageSwitch", false);
         }
     }
 };
@@ -58,12 +46,13 @@ export default {
 
 <style scoped>
 .pageAdd {
-    background-color: white;
     cursor: pointer;
-    padding: 20px 0;
+    padding: 20px 0 50px 0;
 }
 
 .pageAdd-container {
+    background-color: white;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -72,15 +61,31 @@ export default {
 }
 
 .pageAdd-area {
+    height: 100px;
     width: 100%;
+    outline: none;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    position: relative;
+}
+
+.pageAdd-areaTitle {
+    font-weight: bold;
+    font-size: 20px;
+    padding: 20px 3px 5px 3px;
+    align-self: flex-start;
+    color: gray;
 }
 
 .pageAdd-btn {
-    padding: 10px 20px;
+    width: 100%;
+    height: 40px;
+    font-size: 20px;
     background-color: blueviolet;
     color: white;
     cursor: pointer;
-    margin: 10px 0;
     outline: none;
 }
 

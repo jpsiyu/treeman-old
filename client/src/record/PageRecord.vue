@@ -8,11 +8,7 @@
             v-if="pageAddRecordState"
         ></PageAddRecord>
         <div class="recordList">
-            <div class="oneRecord" v-for="(item, i) in recordList" :key="i">
-                <span class="oneRecord-detail">{{item.detail}}</span>
-                <span class="oneRecord-comment">{{item.comment}}</span>
-                <button class="btnDel" @click="deleteRecord(item._id)">Delete</button>
-            </div>
+            <Record v-for="item in recordList" :key="item._id" :item="item" @getRecord="getRecord"></Record>
         </div>
     </div>
 </template>
@@ -20,6 +16,7 @@
 <script>
 import Banner from "../common/Banner";
 import PageAddRecord from "./PageAddRecord";
+import Record from "./Record";
 import request from "../request";
 export default {
     data: function() {
@@ -29,22 +26,20 @@ export default {
             recordList: []
         };
     },
-    components: { Banner, PageAddRecord },
+    components: { Banner, PageAddRecord, Record },
     methods: {
         pageSwitch: function(b) {
             this.pageAddRecordState = b;
         },
-        deleteRecord(id) {
-            request.delRecord(id).then(response => {
-                this.getRecord();
-            });
-        },
         getRecord() {
             request.getRecord(this.id).then(response => {
-                const data = response.data;
-                this.recordList = data || [];
+                const data = response.data || [];
+                data.sort((a, b) => {
+                    return b.timestamp - a.timestamp;
+                });
+                this.recordList = data
             });
-        },
+        }
     },
     mounted: function() {
         this.id = this.$route.query.id;
@@ -59,38 +54,6 @@ export default {
     margin: auto;
     display: flex;
     flex-direction: column;
-}
-
-.oneRecord {
-    background-color: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 5px;
-    position: relative;
-}
-
-.oneRecord-detail {
-    display: block;
-    white-space: pre;
-    padding: 10px 0;
-}
-
-.oneRecord-comment {
-    padding: 10px 0;
-    white-space: pre;
-    display: block;
-    color: gray;
-}
-
-.btnDel {
-    outline: none;
-    background-color: lightcoral;
-    color: white;
-    cursor: pointer;
-    position: absolute;
-    bottom: 10%;
-    right: 5%;
-    padding: 5px 10px;
 }
 </style>
 

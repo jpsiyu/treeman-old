@@ -11,7 +11,7 @@ const getAllPerson = () => {
 }
 
 const delPerson = (name) => {
-    return axios.put("/api/deleteperson", qs.stringify({name}))
+    return axios.put("/api/deleteperson", qs.stringify({ name }))
 }
 
 const getRecord = (id) => {
@@ -28,6 +28,10 @@ const addRecord = (id, detail, comment) => {
     return axios.post("/api/addrecord", qs.stringify(ajaxData))
 }
 
+const updateRecord = (id, detail, comment) => {
+    const ajaxData = { detail, comment, id }
+    return axios.put("/api/updaterecord", qs.stringify(ajaxData))
+}
 
 export default {
     genPerson,
@@ -36,4 +40,5 @@ export default {
     getRecord,
     delRecord,
     addRecord,
+    updateRecord,
 }

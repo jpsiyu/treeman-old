@@ -12,7 +12,7 @@ import (
 
 // base routing
 func HandleHome(w http.ResponseWriter, r *http.Request) {
-	log.Println(r.URL.Path)
+	log.Println("redirect to home, path:", r.URL.Path)
 	indexPath := "dist/index.html"
 	data, err := ioutil.ReadFile(indexPath)
 
@@ -142,6 +142,20 @@ func HandleDeleteRecord(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	id := r.FormValue("id")
 	err := DeleteRecord(id)
+	if err != nil {
+		log.Println(err)
+		w.Write([]byte("error"))
+		return
+	}
+	w.Write([]byte("ok"))
+}
+
+func HandleUpdateRecord(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	id := r.FormValue("id")
+	detail := r.FormValue("detail")
+	comment := r.FormValue("comment")
+	err := UpdateRecord(id, detail, comment)
 	if err != nil {
 		log.Println(err)
 		w.Write([]byte("error"))

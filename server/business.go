@@ -86,3 +86,18 @@ func DeleteRecord(id string) error {
 	return nil
 
 }
+
+func UpdateRecord(id, detail, comment string) error {
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	filter := bson.M{"_id": oid}
+	update := bson.M{"$set": bson.M{"detail": detail, "comment": comment}}
+	err = db.Update(&filter, &update, db.CollectionRecord)
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
