@@ -1,5 +1,11 @@
 <template>
-    <div class="member" @mouseover="onMouseOver" @mouseleave="onMouseLeave" @click="onClick">
+    <div
+        class="member"
+        @mouseover="onMouseOver"
+        @mouseleave="onMouseLeave"
+        @click="onClick"
+        @mouseenter="onMouseEnter"
+    >
         <div class="member-float" :class="{'member-float--over': over}">
             <img class="member-float__head" :src="info.gender | imagePath">
             <span class="member-float__name">{{info.name}}</span>
@@ -29,34 +35,27 @@ export default {
                 this.$emit("getAllPerson");
             });
         },
+        onMouseEnter: function() {
+            this.timer.start(_ => {
+                if (this.timer.getTimePass() > 1) {
+                    this.timer.stop();
+                    this.showDel = true;
+                }
+            });
+        },
+        onMouseLeave: function() {
+            this.showDel = false;
+        },
         onMouseOver: function() {
             this.over = true;
         },
         onMouseLeave: function() {
             this.over = false;
+            this.timer.stop();
+            this.showDel = false;
         },
-
         onClick: function() {
-            this.clickCount++;
-            if (this.clickCount > 1) {
-                this.timer.stop();
-                this.clickCount = 0
-                this.doubleClick();
-                return;
-            }
-            this.timer.start(_ => {
-                if (this.timer.getTimePass() > 0.1) {
-                    this.timer.stop();
-                    this.clickCount = 0
-                    this.oneClick();
-                }
-            });
-        },
-        oneClick: function() {
             this.$router.push(`/record?id=${this.info._id}`);
-        },
-        doubleClick: function() {
-            this.showDel = !this.showDel;
         }
     },
     computed: {
