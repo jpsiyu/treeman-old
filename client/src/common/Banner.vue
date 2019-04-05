@@ -6,9 +6,7 @@
                 <img class="logo" src="../assets/images/treeman.png" @click="toHome">
             </div>
             <div class="grid">
-                <div class="add" @click="onAddClick">
-                    <p class="noselect">+</p>
-                </div>
+                <button class="add" @click="onAddClick">+</button>
             </div>
         </div>
     </div>
@@ -19,8 +17,8 @@ import { MacroEvent } from "../macro";
 export default {
     name: "Banner",
     methods: {
-        onAddClick: function(){
-            this.$emit("pageSwitch", true)
+        onAddClick: function() {
+            this.$emit("pageSwitch", true);
         },
         toHome: function() {
             this.$router.push({ path: "/" });
@@ -72,14 +70,14 @@ export default {
     font-weight: bold;
     width: 30px;
     height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     border-radius: 50%;
     background-color: rgb(0, 158, 248);
     color: white;
     margin-right: 20%;
     cursor: pointer;
+    outline: none;
+    border: none;
+    user-select: none;
 }
 </style>
 
