@@ -17,7 +17,7 @@
 <script>
 import { MacroGender } from "../macro";
 import request from "../request";
-import Timer from "../timer";
+import Timer from "../lib/timer";
 export default {
     name: "Member",
     props: ["info"],

@@ -25,6 +25,7 @@
 <script>
 import { mapState } from "vuex";
 import request from "../request";
+import shuffle from "../lib/shuffle";
 import Member from "./Member";
 import Banner from "../common/Banner";
 import PageAddPerson from "./PageAddPerson";
@@ -43,8 +44,8 @@ export default {
         })
     },
     watch: {
-        searchName: function(){
-            this.search()
+        searchName: function() {
+            this.search();
         }
     },
     methods: {
@@ -54,19 +55,19 @@ export default {
         getAllPerson: function() {
             request.getAllPerson().then(response => {
                 const data = response.data || [];
+                shuffle(data);
                 this.$store.commit("initMembers", data);
             });
         },
         search: function() {
-            if(this.searchName == ""){
-                this.getAllPerson()
-                return
+            if (this.searchName == "") {
+                this.getAllPerson();
+                return;
             }
-            request.getPersonByName(this.searchName)
-                .then(res => {
-                    const data = res.data || []
-                    this.$store.commit("initMembers", data);
-                })
+            request.getPersonByName(this.searchName).then(res => {
+                const data = res.data || [];
+                this.$store.commit("initMembers", data);
+            });
         }
     },
     mounted: function() {

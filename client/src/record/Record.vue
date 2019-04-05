@@ -22,7 +22,7 @@
 
 <script>
 import request from "../request";
-import Timer from "../timer";
+import Timer from "../lib/timer";
 export default {
     props: ["item"],
     data: function() {
