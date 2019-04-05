@@ -90,6 +90,7 @@ export default {
     padding: 30px 0 10px 0;
     line-height: 200%;
     letter-spacing: 1.5px;
+    font-weight: bold;
 }
 
 .record-comment {

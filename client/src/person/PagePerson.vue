@@ -36,10 +36,16 @@ export default {
             searchName: ""
         };
     },
+    components: { Member, Banner, PageAddPerson },
     computed: {
         ...mapState({
             members: state => state.person.members
         })
+    },
+    watch: {
+        searchName: function(){
+            this.search()
+        }
     },
     methods: {
         pageSwitch: function(b) {
@@ -63,7 +69,6 @@ export default {
                 })
         }
     },
-    components: { Member, Banner, PageAddPerson },
     mounted: function() {
         this.getAllPerson();
     }

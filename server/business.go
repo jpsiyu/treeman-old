@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/jpsiyu/treeman/server/db"
@@ -54,7 +55,9 @@ func DeletePerson(id string) error {
 }
 
 func FindPerson(results *[]bson.M, name string) error {
-	filter := bson.M{"name": name}
+	regexStr := fmt.Sprintf(".*%s.*", name)
+	filter := bson.M{"name": bson.M{"$regex": regexStr}}
+	//filter := bson.M{"name": name}
 	err := db.Find(results, &filter, db.CollectionPerson)
 	if err != nil {
 		return err
