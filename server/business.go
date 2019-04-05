@@ -53,6 +53,15 @@ func DeletePerson(id string) error {
 	return nil
 }
 
+func FindPerson(results *[]bson.M, name string) error {
+	filter := bson.M{"name": name}
+	err := db.Find(results, &filter, db.CollectionPerson)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func GetRecord(results *[]bson.M, id string) error {
 	filter := bson.M{"uid": id}
 	err := db.Find(results, &filter, db.CollectionRecord)

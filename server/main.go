@@ -21,6 +21,7 @@ func main() {
 	r.HandleFunc("/api/genperson", HandleGenPerson).Methods("POST")
 	r.HandleFunc("/api/updateperson", HandleUpdatePerson).Methods("PUT")
 	r.HandleFunc("/api/deleteperson", HandleDeletePerson).Methods("PUT")
+	r.HandleFunc("/api/findperson", HandleFindPersonByName).Methods("GET")
 	r.HandleFunc("/api/record", HandleGetRecord).Methods("GET")
 	r.HandleFunc("/api/addrecord", HandleAddRecord).Methods("POST")
 	r.HandleFunc("/api/deleterecord", HandleDeleteRecord).Methods("PUT")

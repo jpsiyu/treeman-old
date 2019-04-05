@@ -103,6 +103,25 @@ func HandleDeletePerson(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("ok"))
 }
 
+func HandleFindPersonByName(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	name := r.FormValue("name")
+	var results []bson.M
+	err := FindPerson(&results, name)
+	if err != nil {
+		log.Println(err)
+		w.Write([]byte("error"))
+		return
+	}
+	encode, err := json.Marshal(&results)
+	if err != nil {
+		log.Println(err)
+		w.Write([]byte("error"))
+		return
+	}
+	w.Write([]byte(encode))
+}
+
 // record collection
 
 func HandleGetRecord(w http.ResponseWriter, r *http.Request) {

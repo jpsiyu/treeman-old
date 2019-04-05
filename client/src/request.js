@@ -14,6 +14,10 @@ const delPerson = (id) => {
     return axios.put("/api/deleteperson", qs.stringify({ id}))
 }
 
+const getPersonByName = (name) => {
+    return axios.get(`/api/findperson?name=${name}`)
+}
+
 const getRecord = (id) => {
     return axios.get(`/api/record?id=${id}`)
 }
@@ -37,6 +41,7 @@ export default {
     genPerson,
     getAllPerson,
     delPerson,
+    getPersonByName,
     getRecord,
     delRecord,
     addRecord,
