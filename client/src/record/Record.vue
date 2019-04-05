@@ -16,6 +16,7 @@
             <textarea class="record-modify__area" v-model="comment"></textarea>
             <button class="record-modify__btn" @click="onModifyClick">Modify</button>
         </div>
+        <span class="record-timestamp">{{item.timestamp | date}}</span>
     </div>
 </template>
 
@@ -32,6 +33,13 @@ export default {
             comment: this.item.comment,
             showModify: false
         };
+    },
+    filters: {
+        date: function(timestamp){
+            const d = new Date(timestamp*1000)
+            const s = d.toLocaleDateString()
+            return s
+        }
     },
     methods: {
         deleteRecord() {
@@ -151,10 +159,17 @@ export default {
     border: none;
     width: 100%;
     height: 50px;
-    background-color: blueviolet;
+    background-color: green;
     color: white;
     cursor: pointer;
     font-size: 18px;
     font-weight: bold;
+}
+
+.record-timestamp{
+    display: block;
+    margin-top: 20px;
+    color: lightseagreen;
+    text-align: end;
 }
 </style>

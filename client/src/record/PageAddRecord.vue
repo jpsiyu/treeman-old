@@ -58,6 +58,7 @@ export default {
     align-items: center;
     margin: auto;
     max-width: 500px;
+    padding: 5px 0;
 }
 
 .pageAdd-area {
@@ -69,21 +70,27 @@ export default {
     font-size: 16px;
     border: none;
     position: relative;
+    word-spacing: 1.5px;
+    line-height: 150%;
 }
 
 .pageAdd-areaTitle {
     font-weight: bold;
-    font-size: 20px;
-    padding: 20px 3px 5px 3px;
+    font-size: 16px;
     align-self: flex-start;
-    color: gray;
+    background-color: lightslategrey;
+    border-radius: 10px;
+    width: 100%;
+    color: white;
+    padding: 2px 5px;
+    box-sizing: border-box;
 }
 
 .pageAdd-btn {
     width: 100%;
     height: 40px;
     font-size: 20px;
-    background-color: blueviolet;
+    background-color: seagreen;
     color: white;
     cursor: pointer;
     outline: none;

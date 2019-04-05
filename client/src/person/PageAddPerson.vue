@@ -2,10 +2,10 @@
     <div class="page-add">
         <div class="detail">
             <div class="top">
-                <h3 class="title">添加人物</h3>
+                <span class="title">添加人物</span>
                 <div class="close noselect" @click="close">X</div>
             </div>
-            <form @submit.prevent="onSubmit">
+            <form class="form" @submit.prevent="onSubmit">
                 <pair>
                     <template v-slot:key>
                         <label>名字:</label>
@@ -20,7 +20,7 @@
                         <label for>性别:</label>
                     </template>
                     <template v-slot:value>
-                        <div>
+                        <div class="radio-wrap">
                             <input type="radio" :value="genderM" v-model="gender">
                             <label>男</label>
                             <input type="radio" :value="genderF" v-model="gender">
@@ -63,8 +63,8 @@ export default {
     data: function() {
         return {
             checkErrors: [],
-            gender: "",
-            age: 0,
+            gender: MacroGender.Male, 
+            age: 20,
             name: ""
         };
     },
@@ -115,7 +115,7 @@ export default {
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.4);
     margin: auto;
     overflow-y: scroll;
     display: flex;
@@ -130,27 +130,28 @@ export default {
 }
 
 .top {
-    position: relative;
+    background-color: black;
+    color: white;
     display: flex;
     justify-content: center;
+    align-items: center;
     font-weight: bold;
-    border-bottom: 2px solid gray;
-    color: gray;
+    height: 50px;
+    position: relative;
 }
 
 .close {
     position: absolute;
-    top: 0;
     right: 0;
-    background-color: goldenrod;
+    margin: 0 10px;
+    background-color: red;
     color: white;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 5px;
     cursor: pointer;
 }
 
@@ -166,13 +167,24 @@ export default {
 .inputname{
     padding: 3px 5px;
     outline: none;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.1);
+    height: 20px;
+    width: 200px;
 }
 
 .ageselect{
-    width: 100px;
-    height: 20px;
+    width: 210px;
+    height: 28px;
     outline: none;
     padding: 3px 5px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: none;
+}
+
+.radio-wrap{
+    width: 200px;
 }
 
 .btn {
@@ -198,7 +210,7 @@ export default {
     font-weight: bold;
 }
 
-form{
+.form{
     padding-top: 20px;
 }
 </style>
