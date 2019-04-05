@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="record-modify" v-if="showModify">
-            <div class="record-modify__space" @click="onSpaceClick">|</div>
+            <div class="record-modify__space" @click="onSpaceClick">^</div>
             <span class="record-modify__title">Detail:</span>
             <textarea class="record-modify__area" v-model="detail"></textarea>
             <span class="record-modify__title">Comment:</span>
@@ -136,6 +136,7 @@ export default {
     text-align: center;
     font-size: 50px;
     cursor: pointer;
+    color: lightslategray;
 }
 
 .record-modify__area {
@@ -150,8 +151,12 @@ export default {
 }
 
 .record-modify__title {
-    font-size: 20px;
+    font-size: 16px;
+    padding: 0 5px;
     font-weight: bold;
+    background-color: lightslategray;
+    border-radius: 10px;
+    color: white;
 }
 
 .record-modify__btn {

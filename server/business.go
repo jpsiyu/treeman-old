@@ -40,9 +40,13 @@ func UpdatePerson(name string, gender, age int) error {
 	return nil
 }
 
-func DeletePerson(name string) error {
-	filter := bson.M{"name": name}
-	err := db.Delete(&filter, db.CollectionPerson)
+func DeletePerson(id string) error {
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	filter := bson.M{"_id": oid}
+	err = db.Delete(&filter, db.CollectionPerson)
 	if err != nil {
 		return err
 	}

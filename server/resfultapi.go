@@ -93,8 +93,8 @@ func HandleUpdatePerson(w http.ResponseWriter, r *http.Request) {
 
 func HandleDeletePerson(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	name := r.FormValue("name")
-	err := DeletePerson(name)
+	id := r.FormValue("id")
+	err := DeletePerson(id)
 	if err != nil {
 		log.Println(err)
 		w.Write([]byte("error"))

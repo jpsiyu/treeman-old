@@ -10,8 +10,8 @@ const getAllPerson = () => {
     return axios.get("/api/allperson")
 }
 
-const delPerson = (name) => {
-    return axios.put("/api/deleteperson", qs.stringify({ name }))
+const delPerson = (id) => {
+    return axios.put("/api/deleteperson", qs.stringify({ id}))
 }
 
 const getRecord = (id) => {

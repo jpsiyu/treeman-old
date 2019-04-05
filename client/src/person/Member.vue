@@ -31,7 +31,7 @@ export default {
     },
     methods: {
         del: function() {
-            request.delPerson(this.info.name).then(res => {
+            request.delPerson(this.info._id).then(res => {
                 this.$emit("getAllPerson");
             });
         },
