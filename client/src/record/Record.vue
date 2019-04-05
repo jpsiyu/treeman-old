@@ -3,13 +3,18 @@
         <div class="record-origin" @mouseenter="onMouseEnter" @mouseleave="onMouseLeave">
             <span class="record-detail">{{item.detail}}</span>
             <span class="record-comment">{{item.comment}}</span>
-            <div class="record-btns" v-if="showBtns">
-                <button class="btnDel record-btns__btn" @click="deleteRecord">Delete</button>
-                <button class="btnModify record-btns__btn" @click="showModify=!showModify">Modify</button>
-            </div>
+            <transition name="slide-fade">
+                <div class="record-btns" v-if="showBtns">
+                    <button class="btnDel record-btns__btn" @click="deleteRecord">Delete</button>
+                    <button
+                        class="btnModify record-btns__btn"
+                        @click="showModify=!showModify"
+                    >Modify</button>
+                </div>
+            </transition>
         </div>
         <div class="record-modify" v-if="showModify">
-            <div class="record-modify__space" @click="onSpaceClick">^</div>
+            <div class="record-modify__space" @click="onSpaceClick">+</div>
             <span class="record-modify__title">Detail:</span>
             <textarea class="record-modify__area" v-model="detail"></textarea>
             <span class="record-modify__title">Comment:</span>
@@ -35,10 +40,10 @@ export default {
         };
     },
     filters: {
-        date: function(timestamp){
-            const d = new Date(timestamp*1000)
-            const s = d.toLocaleDateString()
-            return s
+        date: function(timestamp) {
+            const d = new Date(timestamp * 1000);
+            const s = d.toLocaleDateString();
+            return s;
         }
     },
     methods: {
@@ -105,10 +110,12 @@ export default {
 
 .record-btns {
     position: absolute;
-    top: 10px;
-    right: 10px;
     display: flex;
     flex-direction: column;
+    background-color: white;
+    top: 0;
+    right: 0;
+    padding: 10px;
 }
 
 .record-btns__btn {
@@ -135,7 +142,8 @@ export default {
 }
 .record-modify__space {
     text-align: center;
-    font-size: 50px;
+    font-size: 20px;
+    padding: 20px 0;
     cursor: pointer;
     color: lightslategray;
 }
@@ -172,10 +180,22 @@ export default {
     font-weight: bold;
 }
 
-.record-timestamp{
+.record-timestamp {
     display: block;
     margin-top: 20px;
     color: lightseagreen;
     text-align: end;
+}
+
+.slide-fade-enter-active {
+    transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+    transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+    transform: translateX(10px);
+    opacity: 0;
 }
 </style>
