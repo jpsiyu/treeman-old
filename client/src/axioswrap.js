@@ -3,25 +3,16 @@ import qs from 'qs'
 
 const get = (path) => {
     return axios.get(path, getOptions())
-        .then(res => {
-            return dataMiddleware(res)
-        })
         .catch(handlePromissError)
 }
 
 const put = (path, data) => {
     return axios.put(path, qs.stringify(data), getOptions())
-        .then(res => {
-            return dataMiddleware(res)
-        })
         .catch(handlePromissError)
 }
 
 const post = (path, data) => {
     return axios.post(path, qs.stringify(data), getOptions())
-        .then(res => {
-            return dataMiddleware(res)
-        })
         .catch(handlePromissError)
 }
 
@@ -34,18 +25,13 @@ const getOptions = () => {
     }
 }
 
-const dataMiddleware = (response) => {
-    const serverData = response.data
-    switch (serverData.code) {
-        case 1:
+const handlePromissError = (err) => {
+    const res = err.response
+    switch(res.status){
+        case 401:
             window.vm.$router.push("/login")
             break
     }
-    return serverData
-}
-
-const handlePromissError = (err) => {
-    console.error(err)
 }
 
 export default {

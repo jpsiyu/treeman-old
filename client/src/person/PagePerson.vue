@@ -53,11 +53,15 @@ export default {
             this.pageAddState = b;
         },
         getAllPerson: function() {
-            request.getAllPerson().then(serverData => {
-                const data = serverData.data || [];
-                shuffle(data);
-                this.$store.commit("initMembers", data);
-            });
+            request
+                .getAllPerson()
+                .then(res => {
+                    const serverData = res.data;
+                    const data = serverData.data || [];
+                    shuffle(data);
+                    this.$store.commit("initMembers", data);
+                })
+                .catch(_ => {});
         },
         search: function() {
             if (this.searchName == "") {
@@ -65,7 +69,8 @@ export default {
                 return;
             }
             request.getPersonByName(this.searchName).then(res => {
-                const data = res.data || [];
+                const serverData = res.data;
+                const data = serverData.data || [];
                 this.$store.commit("initMembers", data);
             });
         }

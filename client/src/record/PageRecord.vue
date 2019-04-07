@@ -33,7 +33,8 @@ export default {
         },
         getRecord() {
             request.getRecord(this.id).then(response => {
-                const data = response.data || [];
+                const serverData = response.data
+                const data = serverData.data || [];
                 data.sort((a, b) => {
                     return b.timestamp - a.timestamp;
                 });

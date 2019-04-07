@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -13,28 +14,28 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+func serverErr(w http.ResponseWriter, err error) {
+	log.Println(err)
+	w.WriteHeader(http.StatusInternalServerError)
+	w.Write([]byte(fmt.Sprintf("%s: %s", http.StatusText(http.StatusInternalServerError), err.Error())))
+}
+
 // base routing
 func HandleHome(w http.ResponseWriter, r *http.Request) {
 	indexPath := "dist/index.html"
 	data, err := ioutil.ReadFile(indexPath)
 
 	if err != nil {
-		w.WriteHeader(404)
-		w.Write([]byte("404 - " + http.StatusText(404)))
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(http.StatusText(http.StatusInternalServerError)))
 	} else {
 		w.Write(data)
 	}
 }
 
 func HandleNotFound(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(404)
-	w.Write([]byte("404 - " + http.StatusText(404)))
-}
-
-func normalServerErr(w http.ResponseWriter, err error) {
-	log.Println(err)
-	encode, _ := json.Marshal(ServerMsg{2, nil})
-	w.Write(encode)
+	w.WriteHeader(http.StatusNotFound)
+	w.Write([]byte(http.StatusText(http.StatusNotFound)))
 }
 
 // auth
@@ -47,9 +48,8 @@ func HandleLogin(w http.ResponseWriter, r *http.Request) {
 		Password: password,
 	}
 
-	log.Println(user, user == "treeman")
 	if user != conf.AccessUser || password != conf.AccessPasswd {
-		encode, _ := json.Marshal(ServerMsg{2, "Access denied"})
+		encode, _ := json.Marshal(ServerMsg{false, "Access denied", nil})
 		w.Write([]byte(encode))
 		return
 	}
@@ -57,10 +57,10 @@ func HandleLogin(w http.ResponseWriter, r *http.Request) {
 	tokenStr, err := auth.GenTokenStr(&authUser)
 
 	if err != nil {
-		normalServerErr(w, err)
+		serverErr(w, err)
 		return
 	}
-	encode, _ := json.Marshal(ServerMsg{0, tokenStr})
+	encode, _ := json.Marshal(ServerMsg{true, "", tokenStr})
 	w.Write([]byte(encode))
 }
 
@@ -69,10 +69,10 @@ func HandleGetAllPerson(w http.ResponseWriter, r *http.Request) {
 	var results []bson.M
 	err := GetAllPerson(&results)
 	if err != nil {
-		normalServerErr(w, err)
+		serverErr(w, err)
 		return
 	}
-	encode, _ := json.Marshal(ServerMsg{0, results})
+	encode, _ := json.Marshal(ServerMsg{true, "", results})
 	w.Write([]byte(encode))
 }
 
@@ -84,15 +84,15 @@ func HandleGenPerson(w http.ResponseWriter, r *http.Request) {
 	gender, err := strconv.Atoi(r.FormValue("gender"))
 	age, err := strconv.Atoi(r.FormValue("age"))
 	if err != nil {
-		normalServerErr(w, err)
+		serverErr(w, err)
 		return
 	}
 	err = GenPerson(name, gender, age)
 	if err != nil {
-		normalServerErr(w, err)
+		serverErr(w, err)
 		return
 	}
-	encode, _ := json.Marshal(ServerMsg{0, "ok"})
+	encode, _ := json.Marshal(ServerMsg{true, "", nil})
 	w.Write([]byte(encode))
 }
 
@@ -103,15 +103,15 @@ func HandleUpdatePerson(w http.ResponseWriter, r *http.Request) {
 	gender, err := strconv.Atoi(r.FormValue("gender"))
 	age, err := strconv.Atoi(r.FormValue("age"))
 	if err != nil {
-		normalServerErr(w, err)
+		serverErr(w, err)
 		return
 	}
 	err = UpdatePerson(name, gender, age)
 	if err != nil {
-		normalServerErr(w, err)
+		serverErr(w, err)
 		return
 	}
-	encode, _ := json.Marshal(ServerMsg{0, "ok"})
+	encode, _ := json.Marshal(ServerMsg{true, "", nil})
 	w.Write([]byte(encode))
 }
 
@@ -120,10 +120,10 @@ func HandleDeletePerson(w http.ResponseWriter, r *http.Request) {
 	id := r.FormValue("id")
 	err := DeletePerson(id)
 	if err != nil {
-		normalServerErr(w, err)
+		serverErr(w, err)
 		return
 	}
-	encode, _ := json.Marshal(ServerMsg{0, "ok"})
+	encode, _ := json.Marshal(ServerMsg{true, "", nil})
 	w.Write([]byte(encode))
 }
 
@@ -133,10 +133,10 @@ func HandleFindPersonByName(w http.ResponseWriter, r *http.Request) {
 	var results []bson.M
 	err := FindPerson(&results, name)
 	if err != nil {
-		normalServerErr(w, err)
+		serverErr(w, err)
 		return
 	}
-	encode, _ := json.Marshal(ServerMsg{0, &results})
+	encode, _ := json.Marshal(ServerMsg{true, "", &results})
 	w.Write([]byte(encode))
 }
 
@@ -148,10 +148,10 @@ func HandleGetRecord(w http.ResponseWriter, r *http.Request) {
 	var results []bson.M
 	err := GetRecord(&results, id)
 	if err != nil {
-		normalServerErr(w, err)
+		serverErr(w, err)
 		return
 	}
-	encode, _ := json.Marshal(ServerMsg{0, &results})
+	encode, _ := json.Marshal(ServerMsg{true, "", &results})
 	w.Write([]byte(encode))
 }
 
@@ -162,10 +162,10 @@ func HandleAddRecord(w http.ResponseWriter, r *http.Request) {
 	comment := r.FormValue("comment")
 	err := AddRecord(id, detail, comment)
 	if err != nil {
-		normalServerErr(w, err)
+		serverErr(w, err)
 		return
 	}
-	encode, _ := json.Marshal(ServerMsg{0, "ok"})
+	encode, _ := json.Marshal(ServerMsg{true, "", nil})
 	w.Write([]byte(encode))
 }
 
@@ -174,10 +174,10 @@ func HandleDeleteRecord(w http.ResponseWriter, r *http.Request) {
 	id := r.FormValue("id")
 	err := DeleteRecord(id)
 	if err != nil {
-		normalServerErr(w, err)
+		serverErr(w, err)
 		return
 	}
-	encode, _ := json.Marshal(ServerMsg{0, "ok"})
+	encode, _ := json.Marshal(ServerMsg{true, "", nil})
 	w.Write([]byte(encode))
 }
 
@@ -188,9 +188,9 @@ func HandleUpdateRecord(w http.ResponseWriter, r *http.Request) {
 	comment := r.FormValue("comment")
 	err := UpdateRecord(id, detail, comment)
 	if err != nil {
-		normalServerErr(w, err)
+		serverErr(w, err)
 		return
 	}
-	encode, _ := json.Marshal(ServerMsg{0, "ok"})
+	encode, _ := json.Marshal(ServerMsg{true, "", nil})
 	w.Write([]byte(encode))
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -26,16 +26,17 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		}
 
 		if tokenStr == "" {
-			encode, _ := json.Marshal(ServerMsg{1, nil})
-			w.Write(encode)
+			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte(http.StatusText(http.StatusUnauthorized)))
 			return
 		}
 
 		authUser := auth.AuthUser{}
 		err := auth.ParseTokenStr(tokenStr, &authUser)
 		if err != nil {
-			encode, _ := json.Marshal(ServerMsg{1, nil})
-			w.Write(encode)
+			log.Println(err)
+			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte(fmt.Sprintf("%s: %s", http.StatusText(http.StatusUnauthorized), err.Error())))
 			return
 		}
 		next.ServeHTTP(w, r)

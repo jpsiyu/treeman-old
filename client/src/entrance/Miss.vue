@@ -6,7 +6,18 @@
 </template>
 
 <script>
-export default {};
+import axios from 'axios'
+export default {
+    mounted: function(){
+       axios.get("/pubapi/test") 
+        .then(res => {
+            console.log(res)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+};
 </script>
 
 <style scoped>

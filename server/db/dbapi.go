@@ -10,13 +10,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-const CollectionPerson string = "person" // collection person
-const CollectionRecord string = "record" // collection record
-const dbname string = "treeman"          // database name
-const dbuser string = "root"             // database username
-const dbpw string = "88888888"           // database password
-//const dburl string = "mongodb://localhost:27017" // url for local mongodb
-const dburl string = "mongodb://mongo:27017" //url for mongodb in docker
+const CollectionPerson string = "person"         // collection person
+const CollectionRecord string = "record"         // collection record
+const dbname string = "treeman"                  // database name
+const dbuser string = "root"                     // database username
+const dbpw string = "88888888"                   // database password
+const dburl string = "mongodb://localhost:27017" // url for local mongodb
+//const dburl string = "mongodb://mongo:27017" //url for mongodb in docker
 
 var client *mongo.Client
 
