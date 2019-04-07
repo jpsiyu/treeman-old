@@ -4,11 +4,11 @@
             <div class="form" v-if="show" @keyup.enter="submit">
                 <div class="field">
                     <span>Username</span>
-                    <input type="text" v-model="username">
+                    <input type="text" v-model="username" readonly>
                 </div>
                 <div class="field">
                     <span>Password</span>
-                    <input type="password" v-model="password">
+                    <input type="password" v-model="password" autofocus >
                 </div>
                 <div class="field">
                     <button @click="submit">Submit</button>
@@ -31,7 +31,7 @@ export default {
             show: false,
             error: "",
             timer: null,
-            username: "",
+            username: "treeman",
             password: ""
         };
     },

@@ -222,11 +222,11 @@ export default {
 }
 
 .fade-enter {
-    opacity: 0.5;
-    transform: scale(0, 0);
+    opacity: 0.6;
+    transform: translateY(-200px);
 }
 .fade-enter-active {
-    transition: opacity 0.5s ease-in, transform 0.5s ease-in;
+    transition: opacity 0.2s ease-in, transform 0.2s ease-in;
 }
 </style>
 
