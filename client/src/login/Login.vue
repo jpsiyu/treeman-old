@@ -23,6 +23,7 @@
 
 <script>
 import request from "../request";
+import { MacroServerCode } from "../macro";
 export default {
     name: "Login",
     data: function() {
@@ -41,9 +42,13 @@ export default {
             else this.getToken();
         },
         getToken() {
-            request.getToken().then(serverData => {
-                this.$store.commit("setTokenStr", serverData.data);
-                this.$router.push("/");
+            request.getToken(this.username, this.password).then(serverData => {
+                if (serverData.code == MacroServerCode.OK) {
+                    this.$store.commit("setTokenStr", serverData.data);
+                    this.$router.push("/");
+                }else if(serverData.code == MacroServerCode.BusinessErr){
+                    this.setError(serverData.data)
+                }
             });
         },
         setError: function(msg) {

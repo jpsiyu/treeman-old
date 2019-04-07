@@ -12,7 +12,7 @@ type AuthUser struct {
 	Password string `json:"password"`
 }
 
-const expirationTime = 5 * time.Minute
+const expirationTime = 60 * time.Minute
 
 func GenTokenStr(user *AuthUser) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)

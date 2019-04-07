@@ -38,7 +38,6 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			w.Write(encode)
 			return
 		}
-		log.Println("token", tokenStr)
 		next.ServeHTTP(w, r)
 	})
 }

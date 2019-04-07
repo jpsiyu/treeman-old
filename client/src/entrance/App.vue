@@ -1,15 +1,25 @@
 <template>
     <div id="app">
-        <PagePerson/>
+        <PagePerson v-if="tokenStr"/>
     </div>
 </template>
 
 <script>
 import PagePerson from "../person/PagePerson";
+import { mapState } from 'vuex';
 export default {
     name: "App",
     components: { PagePerson },
-    created: function() {}
+    computed: {
+        ...mapState({
+            tokenStr: state => state.app.tokenStr
+        })
+    },
+    beforeCreate: function(){
+        const tokenStr = this.$store.state.app.tokenStr
+        if(!tokenStr)
+            this.$router.push("/login")
+    },
 };
 </script>
 

@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/jpsiyu/treeman/server/conf"
+
 	"github.com/jpsiyu/treeman/server/auth"
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -39,11 +41,19 @@ func normalServerErr(w http.ResponseWriter, err error) {
 func HandleLogin(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	user := r.FormValue("user")
-	passwd := r.FormValue("passwd")
+	password := r.FormValue("password")
 	authUser := auth.AuthUser{
 		User:     user,
-		Password: passwd,
+		Password: password,
 	}
+
+	log.Println(user, user == "treeman")
+	if user != conf.AccessUser || password != conf.AccessPasswd {
+		encode, _ := json.Marshal(ServerMsg{2, "Access denied"})
+		w.Write([]byte(encode))
+		return
+	}
+
 	tokenStr, err := auth.GenTokenStr(&authUser)
 
 	if err != nil {

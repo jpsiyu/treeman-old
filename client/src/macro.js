@@ -7,4 +7,10 @@ const MacroEvent = {
     AddPerson: "addperson"
 }
 
-export { MacroGender, MacroEvent }
+const MacroServerCode = {
+    OK: 0,
+    Forbidden: 1,
+    BusinessErr: 2,
+}
+
+export { MacroGender, MacroEvent, MacroServerCode }

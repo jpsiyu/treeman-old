@@ -13,5 +13,5 @@ type ServerCode struct {
 var ServerCodeConfig = map[int]ServerCode{
 	0: {Id: 0, Desc: "ok"},
 	1: {Id: 1, Desc: "403 forbidden"},
-	2: {Id: 2, Desc: "server error"},
+	2: {Id: 2, Desc: "business error"},
 }
