@@ -1,13 +1,15 @@
 <template>
     <div class="pageAdd" @click="close">
-        <div class="pageAdd-container">
-            <span class="pageAdd-areaTitle">Detail:</span>
-            <textarea class="pageAdd-area" v-model="detail" @click.stop></textarea>
-            <span class="pageAdd-areaTitle">Comment:</span>
-            <textarea class="pageAdd-area" v-model="comment" @click.stop></textarea>
-            <button class="pageAdd-btn" @click.stop="onBtnSubmit">Submit</button>
-            <div class="pageAdd-error" v-if="error!=''">{{error}}</div>
-        </div>
+        <transition name="fade">
+            <div class="pageAdd-container" v-if="show">
+                <span class="pageAdd-areaTitle">Detail:</span>
+                <textarea class="pageAdd-area" v-model="detail" @click.stop></textarea>
+                <span class="pageAdd-areaTitle">Comment:</span>
+                <textarea class="pageAdd-area" v-model="comment" @click.stop></textarea>
+                <button class="pageAdd-btn" @click.stop="onBtnSubmit">Submit</button>
+                <div class="pageAdd-error" v-if="error!=''">{{error}}</div>
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -20,7 +22,8 @@ export default {
         return {
             detail: "",
             comment: "",
-            error: ""
+            error: "",
+            show: false,
         };
     },
     methods: {
@@ -40,6 +43,9 @@ export default {
         close: function() {
             this.$emit("pageSwitch", false);
         }
+    },
+    mounted: function(){
+        this.show = true
     }
 };
 </script>
@@ -72,17 +78,17 @@ export default {
     position: relative;
     word-spacing: 1.5px;
     line-height: 150%;
+    background-color: rgba(240, 240, 240, 0.8);
 }
 
 .pageAdd-areaTitle {
     font-weight: bold;
     font-size: 16px;
     align-self: flex-start;
-    background-color: lightslategrey;
     border-radius: 10px;
     width: 100%;
-    color: white;
-    padding: 2px 5px;
+    color: lightslategray;
+    padding: 10px 5px;
     box-sizing: border-box;
 }
 
@@ -99,6 +105,14 @@ export default {
 .pageAdd-error {
     padding: 10px 0;
     color: red;
+}
+
+.fade-enter{
+    transform: translateY(-200px);
+}
+
+.fade-enter-active{
+    transition:  transform 0.2s ease-in;
 }
 </style>
 

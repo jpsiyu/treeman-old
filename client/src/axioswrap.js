@@ -12,7 +12,7 @@ const get = (path) => {
 const put = (path, data) => {
     return axios.put(path, qs.stringify(data), getOptions())
         .then(res => {
-            return handleResponse(res)
+            return dataMiddleware(res)
         })
         .catch(handlePromissError)
 }

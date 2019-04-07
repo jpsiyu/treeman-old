@@ -137,11 +137,11 @@ export default {
 /* transitions */
 .fade-enter {
     opacity: 0;
-    transform: translateY(200px);
+    transform: translateY(150px);
 }
 
 .fade-enter-active {
-    transition: opacity 1s, transform 1s ease-in;
+    transition: opacity 1s, transform 0.5s ease-in;
 }
 
 .err-enter,

@@ -1,56 +1,58 @@
 <template>
-    <div class="page-add">
-        <div class="detail">
-            <div class="top">
-                <span class="title">添加人物</span>
-                <div class="close noselect" @click="close">X</div>
+    <div class="page-add" @click="close">
+        <transition name="fade">
+            <div class="detail" v-if="show" @click.stop>
+                <div class="top">
+                    <span class="title">添加人物</span>
+                    <div class="close noselect" @click="close">X</div>
+                </div>
+                <form class="form" @submit.prevent="onSubmit">
+                    <pair>
+                        <template v-slot:key>
+                            <label>名字:</label>
+                        </template>
+                        <template v-slot:value>
+                            <input class="inputname" type="text" v-model="name">
+                        </template>
+                    </pair>
+
+                    <pair>
+                        <template v-slot:key>
+                            <label for>性别:</label>
+                        </template>
+                        <template v-slot:value>
+                            <div class="radio-wrap">
+                                <input type="radio" :value="genderM" v-model="gender">
+                                <label>男</label>
+                                <input type="radio" :value="genderF" v-model="gender">
+                                <label>女</label>
+                            </div>
+                        </template>
+                    </pair>
+
+                    <pair>
+                        <template v-slot:key>
+                            <label>年龄:</label>
+                        </template>
+                        <template v-slot:value>
+                            <select class="ageselect" v-model="age">
+                                <option disabled :value="age">{{age}}</option>
+                                <option v-for="n in 100" :key="n">{{n}}</option>
+                            </select>
+                        </template>
+                    </pair>
+
+                    <pair>
+                        <template v-slot:key>
+                            <div class="error" v-if="checkErrors.length != 0">{{checkErrors[0]}}</div>
+                        </template>
+                        <template v-slot:value>
+                            <button class="btn" type="submit">提交</button>
+                        </template>
+                    </pair>
+                </form>
             </div>
-            <form class="form" @submit.prevent="onSubmit">
-                <pair>
-                    <template v-slot:key>
-                        <label>名字:</label>
-                    </template>
-                    <template v-slot:value>
-                        <input class="inputname" type="text" v-model="name">
-                    </template>
-                </pair>
-
-                <pair>
-                    <template v-slot:key>
-                        <label for>性别:</label>
-                    </template>
-                    <template v-slot:value>
-                        <div class="radio-wrap">
-                            <input type="radio" :value="genderM" v-model="gender">
-                            <label>男</label>
-                            <input type="radio" :value="genderF" v-model="gender">
-                            <label>女</label>
-                        </div>
-                    </template>
-                </pair>
-
-                <pair>
-                    <template v-slot:key>
-                        <label>年龄:</label>
-                    </template>
-                    <template v-slot:value>
-                        <select class="ageselect" v-model="age">
-                            <option disabled :value="age">{{age}}</option>
-                            <option v-for="n in 100" :key="n">{{n}}</option>
-                        </select>
-                    </template>
-                </pair>
-
-                <pair>
-                    <template v-slot:key>
-                        <div class="error" v-if="checkErrors.length != 0">{{checkErrors[0]}}</div>
-                    </template>
-                    <template v-slot:value>
-                        <button class="btn" type="submit">提交</button>
-                    </template>
-                </pair>
-            </form>
-        </div>
+        </transition>
     </div>
 </template>
 
@@ -63,9 +65,10 @@ export default {
     data: function() {
         return {
             checkErrors: [],
-            gender: MacroGender.Male, 
+            gender: MacroGender.Male,
             age: 20,
-            name: ""
+            name: "",
+            show: false
         };
     },
     computed: {
@@ -86,12 +89,17 @@ export default {
             if (!this.gender) this.checkErrors.push("请选择性别!");
 
             if (this.checkErrors.length == 0) {
-                request.genPerson(this.name, this.age, this.gender).then(res => {
-                    this.$emit("getAllPerson")
-                    this.close();
-                });
+                request
+                    .genPerson(this.name, this.age, this.gender)
+                    .then(res => {
+                        this.$emit("getAllPerson");
+                        this.close();
+                    });
             }
         }
+    },
+    mounted: function() {
+        this.show = true;
     },
     components: {
         pair: {
@@ -130,7 +138,7 @@ export default {
 }
 
 .top {
-    background-color: black;
+    background-color: lightseagreen;
     color: white;
     display: flex;
     justify-content: center;
@@ -144,11 +152,10 @@ export default {
     position: absolute;
     right: 0;
     margin: 0 10px;
-    background-color: red;
     color: white;
     border-radius: 50%;
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -164,7 +171,7 @@ export default {
     margin: auto;
 }
 
-.inputname{
+.inputname {
     padding: 3px 5px;
     outline: none;
     border: none;
@@ -173,7 +180,7 @@ export default {
     width: 200px;
 }
 
-.ageselect{
+.ageselect {
     width: 210px;
     height: 28px;
     outline: none;
@@ -183,7 +190,7 @@ export default {
     border-radius: none;
 }
 
-.radio-wrap{
+.radio-wrap {
     width: 200px;
 }
 
@@ -191,7 +198,7 @@ export default {
     padding: 5px 20px;
     outline: none;
     border: none;
-    background-color: blueviolet;
+    background-color: lightseagreen;
     color: white;
     cursor: pointer;
 }
@@ -210,8 +217,16 @@ export default {
     font-weight: bold;
 }
 
-.form{
+.form {
     padding-top: 20px;
+}
+
+.fade-enter {
+    opacity: 0.5;
+    transform: scale(0, 0);
+}
+.fade-enter-active {
+    transition: opacity 0.5s ease-in, transform 0.5s ease-in;
 }
 </style>
 
