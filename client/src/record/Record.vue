@@ -152,20 +152,21 @@ export default {
     color: gray;
     outline: none;
     border: none;
-    width: 90%;
+    width: 100%;
     height: 100px;
+    box-sizing: border-box;
     font-size: 16px;
     word-spacing: 1.5px;
     padding: 10px;
+    background-color: rgba(240, 240, 240, 0.8);
 }
 
 .record-modify__title {
     font-size: 16px;
-    padding: 0 5px;
+    padding: 5px;
     font-weight: bold;
-    background-color: lightslategray;
+    color: lightslategray;
     border-radius: 10px;
-    color: white;
 }
 
 .record-modify__btn {
