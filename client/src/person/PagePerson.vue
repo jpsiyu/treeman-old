@@ -53,8 +53,8 @@ export default {
             this.pageAddState = b;
         },
         getAllPerson: function() {
-            request.getAllPerson().then(response => {
-                const data = response.data || [];
+            request.getAllPerson().then(serverData => {
+                const data = serverData.data || [];
                 shuffle(data);
                 this.$store.commit("initMembers", data);
             });

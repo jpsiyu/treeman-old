@@ -2,10 +2,12 @@ import VueRouter from 'vue-router'
 import App from "./entrance/App"
 import PageRecord from "./record/PageRecord"
 import Miss from './entrance/Miss'
+import Login from './login/Login'
 
 const routes = [
     { path: "/", component: App },
-    { path: "/record", component: PageRecord},
+    { path: "/login", component: Login },
+    { path: "/record", component: PageRecord },
     { path: "*", component: Miss },
 ]
 

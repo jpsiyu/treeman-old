@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/jpsiyu/treeman/server/conf"
 	"github.com/jpsiyu/treeman/server/db"
 )
 
@@ -14,9 +15,13 @@ func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	r := mux.NewRouter()
+	// set middleware
+	r.Use(LoggingMiddleware)
+	r.Use(AuthMiddleware)
 	// set handler
 	r.PathPrefix("/static").Handler(http.StripPrefix("/static", http.FileServer(http.Dir("dist/"))))
 	r.HandleFunc("/", HandleHome).Methods("GET")
+	r.HandleFunc("/pubapi/login", HandleLogin).Methods("GET")
 	r.HandleFunc("/api/allperson", HandleGetAllPerson).Methods("GET")
 	r.HandleFunc("/api/genperson", HandleGenPerson).Methods("POST")
 	r.HandleFunc("/api/updateperson", HandleUpdatePerson).Methods("PUT")
@@ -39,6 +44,6 @@ func main() {
 	}
 	log.Println("Database connection established!")
 
-	log.Println(fmt.Sprintf("Server listening on port %d", Port))
-	http.ListenAndServe(fmt.Sprintf(":%d", Port), r)
+	log.Println(fmt.Sprintf("Server listening on port %d", conf.Port))
+	http.ListenAndServe(fmt.Sprintf(":%d", conf.Port), r)
 }

@@ -1,5 +1,15 @@
 import Vuex from 'vuex'
-import { MacroGender } from './macro'
+
+const app = {
+    state: {
+        tokenStr: ""
+    },
+    mutations: {
+        setTokenStr: function(state, payload){
+            state.tokenStr = payload
+        }
+    }
+}
 
 const person = {
     state: {
@@ -13,16 +23,11 @@ const person = {
     },
 }
 
-const behavior = {
-    state: {},
-    mutations: {},
-}
-
 const createStore = () => {
     return new Vuex.Store({
         modules: {
+            app,
             person,
-            behavior,
         }
     })
 }

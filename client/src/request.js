@@ -1,43 +1,47 @@
-import axios from 'axios'
-import qs from 'qs'
+import restwrap from './restwrap'
+
+const getToken = () => {
+    return restwrap.get("/pubapi/login")
+}
 
 const genPerson = (name, age, gender) => {
     const ajaxData = { name, age, gender }
-    return axios.post("/api/genperson", qs.stringify(ajaxData))
+    return restwrap.post("/api/genperson", ajaxData)
 }
 
 const getAllPerson = () => {
-    return axios.get("/api/allperson")
+    return restwrap.get("/api/allperson")
 }
 
 const delPerson = (id) => {
-    return axios.put("/api/deleteperson", qs.stringify({ id}))
+    return restwrap.put("/api/deleteperson", { id })
 }
 
 const getPersonByName = (name) => {
-    return axios.get(`/api/findperson?name=${name}`)
+    return restwrap.get(`/api/findperson?name=${name}`)
 }
 
 const getRecord = (id) => {
-    return axios.get(`/api/record?id=${id}`)
+    return restwrap.get(`/api/record?id=${id}`)
 }
 
 const delRecord = (id) => {
     const ajaxData = { id };
-    return axios.put("/api/deleterecord", qs.stringify(ajaxData))
+    return restwrap.put("/api/deleterecord", ajaxData)
 }
 
 const addRecord = (id, detail, comment) => {
     const ajaxData = { detail, comment, id }
-    return axios.post("/api/addrecord", qs.stringify(ajaxData))
+    return restwrap.post("/api/addrecord", ajaxData)
 }
 
 const updateRecord = (id, detail, comment) => {
     const ajaxData = { detail, comment, id }
-    return axios.put("/api/updaterecord", qs.stringify(ajaxData))
+    return restwrap.put("/api/updaterecord", ajaxData)
 }
 
 export default {
+    getToken,
     genPerson,
     getAllPerson,
     delPerson,
