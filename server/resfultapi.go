@@ -99,6 +99,7 @@ func HandleGenPerson(w http.ResponseWriter, r *http.Request) {
 func HandleUpdatePerson(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	var err error
+	id := r.FormValue("id")
 	name := r.FormValue("name")
 	gender, err := strconv.Atoi(r.FormValue("gender"))
 	age, err := strconv.Atoi(r.FormValue("age"))
@@ -106,7 +107,7 @@ func HandleUpdatePerson(w http.ResponseWriter, r *http.Request) {
 		serverErr(w, err)
 		return
 	}
-	err = UpdatePerson(name, gender, age)
+	err = UpdatePerson(id, name, gender, age)
 	if err != nil {
 		serverErr(w, err)
 		return

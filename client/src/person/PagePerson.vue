@@ -16,9 +16,15 @@
                 :key="info.id"
                 :info="info"
                 @getAllPerson="getAllPerson"
+                @pageSwitch="pageSwitch"
             />
         </div>
-        <PageAddPerson v-if="pageAddState" @pageSwitch="pageSwitch" @getAllPerson="getAllPerson"></PageAddPerson>
+        <PageAddPerson
+            v-if="pageAddState"
+            :pageAddData="pageAddData"
+            @pageSwitch="pageSwitch"
+            @getAllPerson="getAllPerson"
+        ></PageAddPerson>
     </div>
 </template>
 
@@ -34,6 +40,7 @@ export default {
     data: function() {
         return {
             pageAddState: false,
+            pageAddData: null,
             searchName: ""
         };
     },
@@ -49,8 +56,10 @@ export default {
         }
     },
     methods: {
-        pageSwitch: function(b) {
+        pageSwitch: function(b, data) {
             this.pageAddState = b;
+            if (data) this.pageAddData = data;
+            if (!b) this.pageAddData = null;
         },
         getAllPerson: function() {
             request

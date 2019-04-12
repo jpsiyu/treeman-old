@@ -31,10 +31,14 @@ func GenPerson(name string, gender, age int) error {
 	return nil
 }
 
-func UpdatePerson(name string, gender, age int) error {
-	filter := bson.M{"name": name}
-	update := bson.M{"$set": bson.M{"gender": gender, "age": age}}
-	err := db.Update(&filter, &update, db.CollectionPerson)
+func UpdatePerson(id string, name string, gender, age int) error {
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	filter := bson.M{"_id": oid}
+	update := bson.M{"$set": bson.M{"name": name, "gender": gender, "age": age}}
+	err = db.Update(&filter, &update, db.CollectionPerson)
 	if err != nil {
 		return err
 	}

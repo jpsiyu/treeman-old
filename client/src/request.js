@@ -13,6 +13,11 @@ const getAllPerson = () => {
     return axioswrap.get("/api/allperson")
 }
 
+const updatePerson = (id, name, age, gender) => {
+    const ajaxData = {id, name, age, gender}
+    return axioswrap.put("/api/updateperson", ajaxData)
+}
+
 const delPerson = (id) => {
     return axioswrap.put("/api/deleteperson", { id })
 }
@@ -45,6 +50,7 @@ export default {
     genPerson,
     getAllPerson,
     delPerson,
+    updatePerson,
     getPersonByName,
     getRecord,
     delRecord,

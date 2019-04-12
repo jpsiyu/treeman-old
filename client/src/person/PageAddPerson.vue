@@ -62,6 +62,7 @@ import request from "../request";
 import Vue from "vue";
 export default {
     name: "PageAdd",
+    props: ["pageAddData"],
     data: function() {
         return {
             checkErrors: [],
@@ -89,17 +90,36 @@ export default {
             if (!this.gender) this.checkErrors.push("请选择性别!");
 
             if (this.checkErrors.length == 0) {
-                request
-                    .genPerson(this.name, this.age, this.gender)
-                    .then(res => {
-                        this.$emit("getAllPerson");
-                        this.close();
-                    });
+                this.pageAddData ? this.modifyPerson() : this.addPerson();
             }
+        },
+        modifyPerson() {
+            request
+                .updatePerson(
+                    this.pageAddData._id,
+                    this.name,
+                    this.age,
+                    this.gender
+                )
+                .then(res => {
+                    this.$emit("getAllPerson");
+                    this.close();
+                });
+        },
+        addPerson() {
+            request.genPerson(this.name, this.age, this.gender).then(res => {
+                this.$emit("getAllPerson");
+                this.close();
+            });
         }
     },
     mounted: function() {
         this.show = true;
+        if (this.pageAddData) {
+            this.name = this.pageAddData.name;
+            this.age = this.pageAddData.age;
+            this.gender = this.pageAddData.gender;
+        }
     },
     components: {
         pair: {

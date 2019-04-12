@@ -9,7 +9,8 @@
         <div class="member-float" :class="{'member-float--over': over}">
             <img class="member-float__head" :src="info.gender | imagePath">
             <span class="member-float__name">{{info.name}}</span>
-            <button class="member-float__del" v-if="showDel" @click.stop="del">Delete</button>
+            <button class="member-float__del" v-if="false" @click.stop="del">Delete</button>
+            <button class="member-float__modify" v-if="showOpBtn" @click.stop="modify">Modify</button>
         </div>
     </div>
 </template>
@@ -25,7 +26,7 @@ export default {
         return {
             timer: new Timer(),
             over: false,
-            showDel: false,
+            showOpBtn: false,
             clickCount: 0
         };
     },
@@ -35,16 +36,19 @@ export default {
                 this.$emit("getAllPerson");
             });
         },
+        modify: function(){
+            this.$emit("pageSwitch", true, this.info)
+        },
         onMouseEnter: function() {
             this.timer.start(_ => {
                 if (this.timer.getTimePass() > 1) {
                     this.timer.stop();
-                    this.showDel = true;
+                    this.showOpBtn = true;
                 }
             });
         },
         onMouseLeave: function() {
-            this.showDel = false;
+            this.showOpBtn = false;
         },
         onMouseOver: function() {
             this.over = true;
@@ -52,7 +56,7 @@ export default {
         onMouseLeave: function() {
             this.over = false;
             this.timer.stop();
-            this.showDel = false;
+            this.showOpBtn = false;
         },
         onClick: function() {
             this.$router.push(`/record?id=${this.info._id}`);
@@ -112,6 +116,17 @@ export default {
     outline: none;
     color: white;
     background-color: red;
+    height: 60%;
+    padding: 0 10px;
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+
+.member-float__modify {
+    outline: none;
+    color: white;
+    background-color: lightskyblue;
     height: 60%;
     padding: 0 10px;
     position: absolute;
