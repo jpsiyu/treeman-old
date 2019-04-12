@@ -9,7 +9,7 @@
         <div class="member-float" :class="{'member-float--over': over}">
             <img class="member-float__head" :src="info.gender | imagePath">
             <span class="member-float__name">{{info.name}}</span>
-            <button class="member-float__del" v-if="false" @click.stop="del">Delete</button>
+            <button class="member-float__del" v-if="showOpBtn" @click.stop="del">Delete</button>
             <button class="member-float__modify" v-if="showOpBtn" @click.stop="modify">Modify</button>
         </div>
     </div>
@@ -119,7 +119,7 @@ export default {
     height: 60%;
     padding: 0 10px;
     position: absolute;
-    right: 10px;
+    right: 80px;
     cursor: pointer;
 }
 
