@@ -2,6 +2,8 @@ package db
 
 import (
 	"context"
+	"errors"
+	"log"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -15,15 +17,41 @@ const CollectionRecord string = "record" // collection record
 const dbname string = "treeman"          // database name
 const dbuser string = "root"             // database username
 const dbpw string = "88888888"           // database password
-//const dburl string = "mongodb://localhost:27017" // url for local mongodb
-const dburl string = "mongodb://mongo:27017" //url for mongodb in docker
+var dburls []string = []string{
+	"mongodb://localhost:27017",
+	"mongodb://mongo:27017",
+}
 
 var client *mongo.Client
 
-func Connect() error {
+func SmartConnect(c chan error) {
+	var err error
+	for i := 0; i < len(dburls); i++ {
+		log.Println("connect to db url", dburls[i])
+		err = Connect(dburls[i])
+		if err != nil {
+			c <- err
+			return
+		}
+		for j := 0; j < 10; j++ {
+			err = Ping()
+			if err != nil {
+				log.Println("ping fail", j)
+				time.Sleep(1 * time.Second)
+			} else {
+				log.Println("ping success")
+				c <- nil
+				return
+			}
+		}
+	}
+	c <- errors.New("connect failed")
+}
+
+func Connect(url string) error {
 	var err error
 	cdt := options.Credential{Username: dbuser, Password: dbpw}
-	client, err = mongo.NewClient(options.Client().ApplyURI(dburl).SetAuth(cdt))
+	client, err = mongo.NewClient(options.Client().ApplyURI(url).SetAuth(cdt))
 	if err != nil {
 		return err
 	}
@@ -39,7 +67,7 @@ func Connect() error {
 }
 
 func Ping() error {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 	err := client.Ping(ctx, readpref.Primary())
 	if err != nil {

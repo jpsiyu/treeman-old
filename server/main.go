@@ -34,15 +34,12 @@ func main() {
 	r.NotFoundHandler = http.HandlerFunc(HandleHome)
 
 	// connect database
-	err := db.Connect()
+	dbchan := make(chan error)
+	go db.SmartConnect(dbchan)
+	err := <-dbchan
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = db.Ping()
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Println("Database connection established!")
 
 	log.Println(fmt.Sprintf("Server listening on port %d", conf.Port))
 	http.ListenAndServe(fmt.Sprintf(":%d", conf.Port), r)

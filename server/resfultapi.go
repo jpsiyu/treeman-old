@@ -6,7 +6,9 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"runtime"
 	"strconv"
+	"strings"
 
 	"github.com/jpsiyu/treeman/server/conf"
 
@@ -15,7 +17,9 @@ import (
 )
 
 func serverErr(w http.ResponseWriter, err error) {
-	log.Println(err)
+	_, file, line, _ := runtime.Caller(1)
+	s := strings.Split(file, "/")
+	log.Printf("%s:%d server error: %s", s[len(s)-1], line, err.Error())
 	w.WriteHeader(http.StatusInternalServerError)
 	w.Write([]byte(fmt.Sprintf("%s: %s", http.StatusText(http.StatusInternalServerError), err.Error())))
 }
