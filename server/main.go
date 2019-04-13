@@ -2,17 +2,28 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/jpsiyu/treeman/server/conf"
 	"github.com/jpsiyu/treeman/server/db"
 )
 
-func main() {
-	// set log config
+func logInit() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	f, err := os.OpenFile("server.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	writers := io.MultiWriter(os.Stdout, f)
+	log.SetOutput(writers)
+}
+
+func main() {
+	logInit()
 
 	r := mux.NewRouter()
 	// set middleware
@@ -21,6 +32,7 @@ func main() {
 	// set handler
 	r.PathPrefix("/static").Handler(http.StripPrefix("/static", http.FileServer(http.Dir("dist/"))))
 	r.HandleFunc("/", HandleHome).Methods("GET")
+	r.HandleFunc("/serverlog", HandleServerLog).Methods("GET")
 	r.HandleFunc("/pubapi/login", HandleLogin).Methods("GET")
 	r.HandleFunc("/api/allperson", HandleGetAllPerson).Methods("GET")
 	r.HandleFunc("/api/genperson", HandleGenPerson).Methods("POST")

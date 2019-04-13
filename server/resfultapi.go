@@ -42,6 +42,17 @@ func HandleNotFound(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(http.StatusText(http.StatusNotFound)))
 }
 
+// server log
+func HandleServerLog(w http.ResponseWriter, r *http.Request) {
+	logPath := "./server.log"
+	data, err := ioutil.ReadFile(logPath)
+	if err != nil {
+		serverErr(w, err)
+	} else {
+		w.Write(data)
+	}
+}
+
 // auth
 func HandleLogin(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
